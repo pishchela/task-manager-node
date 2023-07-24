@@ -46,11 +46,17 @@ router.get('/users/:id', async (req, res) => {
 
 router.patch('/users/me', auth, async (req, res) => {
     const _body = req.body;
+    const permittedFields = ['name', 'age', 'email'];
     try {
+        Object.keys(_body).forEach((item) => {
+            if (!permittedFields.includes(item)) {
+                throw new Error(`no ${item} field in the user`);
+            }
+        });
         const updatedUser = await req.user.updateOne(_body, { new: true, runValidators: true });
         res.status(201).send(updatedUser);
     } catch (e) {
-        res.status(500).send(e);
+        res.status(400).send(e);
     }
 });
 
@@ -73,9 +79,8 @@ router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(body.email, body.password);
         const token = await user.generateAuthToken();
-        res.status(201).send({ user, token });
+        res.status(200).send({ user, token });
     } catch (e) {
-        console.warn(e);
         res.status(400).send(e);
     }
 });
@@ -92,7 +97,7 @@ router.post('/users/logoutAll', async (req, res) => {
 
 router.delete('/users/me', auth, async (req, res) => {
    try {
-       await req.user.remove();
+       await req.user.deleteOne();
        res.status(200).send(req.user);
 
    } catch (e) {
@@ -105,9 +110,8 @@ router.delete('/users/me', auth, async (req, res) => {
 
 router.post('/users/me/avatar', [auth, upload.single('avatar')], async (req, res) => {
     req.user.avatar = req.file.buffer;
-    console.warn(req.file);
     await req.user.save();
-    res.send();
+    res.status(200).send();
 }, (error, req, res, next) => {
     res.status(400).send({ error: error.message });
 });

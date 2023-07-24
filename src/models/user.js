@@ -66,12 +66,12 @@ userSchema.methods.generateAuthToken = async function() {
     return token;
 }
 
-userSchema.methods.toJSON = function () {
-    return {
-        name: this.name,
-        email: this.email,
-    };
-}
+// userSchema.methods.toJSON = function () {
+//     return {
+//         name: this.name,
+//         email: this.email,
+//     };
+// }
 
 userSchema.statics.findByCredentials = async function(email, password) {
     const user = await User.findOne({ email });

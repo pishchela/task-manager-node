@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGOOSE_API_KEY + '/my-new-db', {
+mongoose.connect(process.env.MONGOOSE_API_KEY, {
     useNewUrlParser: true,
 });
