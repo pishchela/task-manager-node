@@ -50,7 +50,7 @@ router.get('/tasks/:id', auth, async (req, res) => {
 router.delete('/tasks/:id', auth, async (req, res) => {
     const _id = req.params.id;
     try {
-        const task = await Task.findOneAndDelete({ _id, owner: req.user._id });
+        await Task.findOneAndDelete({ _id, owner: req.user._id });
         const count = await Task.count({ completed: false });
         res.status(201).send('length: ' + count);
     } catch (e) {
