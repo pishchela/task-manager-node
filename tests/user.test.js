@@ -133,12 +133,34 @@ describe('Users tests', () => {
             })
             .expect(400);
     });
+
+    test('Should not signup user with invalid name/email/password', async () => {
+        const signupUser = {
+            name: 'Invalid password',
+            email: 'mock@example.com',
+            password: 'p@s',
+        }
+
+        const response = await request(app)
+            .post('/user')
+            .send(signupUser)
+            .expect(500);
+
+    });
+
+    test('Should not update user if unauthenticated', async () => {
+        await request(app)
+            .patch('/users/me')
+            .send({
+                name: 'users name',
+            })
+            .expect(401);
+    });
+
+    test('Should not delete user if unauthenticated', async () => {
+        await request(app)
+            .delete('/users/me')
+            .expect(401);
+    });
 });
-
-// TODO:
-
-// Should not signup user with invalid name/email/password
-// Should not update user if unauthenticated
-// Should not update user with invalid name/email/password
-// Should not delete user if unauthenticated
 
