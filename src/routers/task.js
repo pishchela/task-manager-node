@@ -27,7 +27,7 @@ router.get('/tasks', auth, async (req, res) => {
             .find(filter)
             .skip(pageOptions.page * pageOptions.limit)
             .limit(pageOptions.limit);
-        res.status(201).send(tasks);
+        res.status(200).send(tasks);
     } catch (e) {
         res.status(500).send(e);
     }
@@ -94,13 +94,13 @@ router.patch('/tasks/:id', async (req, res) => {
 
 
 router.post('/task', auth, async (req, res) => {
-    const user = new Task({
+    const task = new Task({
         ...req.body,
         owner: req.user._id,
     });
     try {
-        await user.save();
-        res.status(201).send('saved!');
+        await task.save();
+        res.status(201).send(task);
     } catch (e) {
         res.status(500).send(e);
     }
