@@ -49,11 +49,11 @@ const taskThree = {
 const setupDatabase = async () => {
     await User.deleteMany();
     await Task.deleteMany();
+    await new User(mockUser).save();
+    await new User(anotherMockUser).save();
     await new Task(taskOne).save();
     await new Task(taskTwo).save();
     await new Task(taskThree).save();
-    await new User(mockUser).save();
-    await new User(anotherMockUser).save();
 }
 
 
