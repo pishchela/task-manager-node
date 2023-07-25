@@ -135,3 +135,10 @@ describe('Users tests', () => {
     });
 });
 
+// TODO:
+
+// Should not signup user with invalid name/email/password
+// Should not update user if unauthenticated
+// Should not update user with invalid name/email/password
+// Should not delete user if unauthenticated
+
